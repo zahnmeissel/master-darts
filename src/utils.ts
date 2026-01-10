@@ -1,0 +1,1 @@
+export const getApiUrl = (url: string) => `${import.meta.env.VITE_BASE_URL}/${url}`;
