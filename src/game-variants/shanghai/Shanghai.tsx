@@ -4,7 +4,7 @@ import TotalScore from "../cricket/TotalScore.tsx";
 import {useState} from "react";
 import ShanghaiScore from "./ShanghaiScore.tsx";
 
-export default function Shanghai({player1Name, player2Name}: GameProps) {
+export default function Shanghai({players}: GameProps) {
 	const [player1, setPlayer1] = useState<number[]>([]);
 	const [player2, setPlayer2] = useState<number[]>([]);
 
@@ -41,13 +41,13 @@ export default function Shanghai({player1Name, player2Name}: GameProps) {
 					</div>
 					<div className="player-info">
 						<div className="player-name">
-							{player1Name}
+							{players[0]}
 						</div>
 						<div className="player-switch-button">
 							<Button icon="pi pi-arrow-right-arrow-left"/>
 						</div>
 						<div className="player-name">
-							{player2Name}
+							{players[1]}
 						</div>
 					</div>
 				</div>

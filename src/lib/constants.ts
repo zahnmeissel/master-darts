@@ -11,8 +11,7 @@ export const X01: GameVariant = {name: "X01", maxPlayers: 2};
 export const gameVariantOptions: GameVariant[] = [CRICKET, SHANGHAI, X01];
 
 export type GameProps = {
-	player1Name: string;
-	player2Name: string;
+	players: string[];
 }
 
 export const possibleScores = [

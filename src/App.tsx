@@ -11,25 +11,27 @@ function App() {
 
 	const [showNewGameDialog, setShowNewGameDialog] = useState(true);
 	const [gameVariant, setGameVariant] = useState<GameVariant>(SHANGHAI);
-	const [gameProps, setGameProps] = useState<GameProps>({player1Name: "Player 1", player2Name: "Player 2"});
+	const [gameProps, setGameProps] = useState<GameProps>({players: ["Player 1", "Player 2"]});
 
-	function onStartNewGame(gameVariant: GameVariant, player1: string, player2: string) {
+	function onStartNewGame(gameVariant: GameVariant, players: string[]) {
 		setShowNewGameDialog(false);
 		setGameVariant(gameVariant);
-		setGameProps({player1Name: player1, player2Name: player2});
+		setGameProps({players: [player1, player2]});
 	}
 
+	function GameVariant() {
+		if (gameVariant === CRICKET) {
+			return <Cricket players={gameProps.players}/>
+		} else if (gameVariant === SHANGHAI) {
+			return <Shanghai players={gameProps.players}/>
+		} else
+			return null;
+	}
 	return (
 		<PrimeReactProvider>
 			{showNewGameDialog && <NewGame onStartNewGame={onStartNewGame}></NewGame>}
-			{!showNewGameDialog && gameVariant === CRICKET &&
-              <Cricket
-                player1Name={gameProps.player1Name}
-                player2Name={gameProps.player2Name}/>}
-			{!showNewGameDialog && gameVariant === SHANGHAI &&
-              <Shanghai
-                player1Name={gameProps.player1Name}
-                player2Name={gameProps.player2Name}/>}
+
+			{!showNewGameDialog && <GameVariant/>}
 		</PrimeReactProvider>
 	)
 }

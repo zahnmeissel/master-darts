@@ -4,7 +4,7 @@ import {useState} from "react";
 import TotalScore from "./TotalScore.tsx";
 import HitScore from "../components/HitScore.tsx";
 
-export default function Cricket({player1Name, player2Name}: GameProps) {
+export default function Cricket({players}: GameProps) {
 
 	const [player1, setPlayer1] = useState([0, 0, 0, 0, 0, 0, 0]);
 	const [player2, setPlayer2] = useState([0, 0, 0, 0, 0, 0, 0]);
@@ -70,13 +70,13 @@ export default function Cricket({player1Name, player2Name}: GameProps) {
 			<div className="game">
 				<div className="player-info">
 					<div className="player-name">
-						{player1Name}
+						{players[0]}
 					</div>
 					<div className="player-switch-button">
 						<Button icon="pi pi-arrow-right-arrow-left"/>
 					</div>
 					<div className="player-name">
-						{player2Name}
+						{players[2]}
 					</div>
 				</div>
 				{cricketGameScores.map((score, index) => {
