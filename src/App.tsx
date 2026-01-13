@@ -14,9 +14,9 @@ function App() {
 	const [gameProps, setGameProps] = useState<GameProps>({players: ["Player 1", "Player 2"]});
 
 	function onStartNewGame(gameVariant: GameVariant, players: string[]) {
+		setGameProps({players});
 		setShowNewGameDialog(false);
 		setGameVariant(gameVariant);
-		setGameProps({players: [player1, player2]});
 	}
 
 	function GameVariant() {

@@ -11,8 +11,8 @@ type NewGameProps = {
 }
 export default function NewGame({onStartNewGame}: NewGameProps) {
 	const [selectedGame, setSelectedGame] = useState<GameVariant>(CRICKET);
-	const [player1Name, setPlayer1Name] = useState("Player 1");
-	const [player2Name, setPlayer2Name] = useState("Player 2");
+	const [player1Name, setPlayer1Name] = useState<string>("Player 1");
+	const [player2Name, setPlayer2Name] = useState<string>("Player 2");
 
 	const handleOnClick = () => {
 		// Handle the start game logic here

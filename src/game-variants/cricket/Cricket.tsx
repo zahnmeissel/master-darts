@@ -76,7 +76,7 @@ export default function Cricket({players}: GameProps) {
 						<Button icon="pi pi-arrow-right-arrow-left"/>
 					</div>
 					<div className="player-name">
-						{players[2]}
+						{players[1]}
 					</div>
 				</div>
 				{cricketGameScores.map((score, index) => {
