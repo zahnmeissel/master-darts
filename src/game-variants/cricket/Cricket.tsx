@@ -1,5 +1,5 @@
 import {Button} from "primereact/button";
-import {type GameProps, cricketGameScores, cricketGameScoresAsNumbers} from "../../lib/constants.ts";
+import {type GameProps, type PlayerInfo, cricketGameScores, cricketGameScoresAsNumbers} from "../../lib/constants.ts";
 import {useState} from "react";
 import TotalScore from "./TotalScore.tsx";
 import HitScore from "../components/HitScore.tsx";
@@ -10,6 +10,22 @@ export default function Cricket({players}: GameProps) {
 	const [player2, setPlayer2] = useState([0, 0, 0, 0, 0, 0, 0]);
 	const [totalScore1, setTotalScore1] = useState(0);
 	const [totalScore2, setTotalScore2] = useState(0);
+
+	const [playersHistory, setPlayersHistory] = useState<PlayerInfo>(() => {
+		return convertInitialPlayers(players);
+	});
+
+	function convertInitialPlayers(players): PlayerInfo {
+		if (!Array.isArray(players)) return [];
+		const list = players.map((item, index) => ({
+			id: index + 1,
+			name: item,
+			score: 0,
+			hits: {}
+		}));
+		console.log("current cricket players are:", list);
+		return list;
+	}
 
 	/*TODO:
 	 * - Add a reset button toreset the game

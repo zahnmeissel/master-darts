@@ -14,11 +14,9 @@ export default function HitScore({onIncrementScore, index, playerId, disabled, .
 	const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
 		console.log("HitScore clicked", event);
 		if (!disabled) {
-			setCount(prevCount => {
-				const newCount = prevCount + 1;
-				onIncrementScore(newCount, index, playerId);
-				return newCount;
-			});
+			const newCount = count + 1;
+			setCount(newCount);
+			onIncrementScore(newCount, index, playerId);
 		}
 	}, [disabled, onIncrementScore, index, playerId]);
 
