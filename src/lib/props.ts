@@ -1,0 +1,3 @@
+type PlayerList = {
+    players: string[];
+}

@@ -11,19 +11,19 @@ function App() {
 
 	const [showNewGameDialog, setShowNewGameDialog] = useState(true);
 	const [gameVariant, setGameVariant] = useState<GameVariant>(SHANGHAI);
-	const [gameProps, setGameProps] = useState<GameProps>({players: ["Player 1", "Player 2"]});
+	const [gameProps, setGameProps] = useState<GameProps>({playerNames: ["Player 1", "Player 2"]});
 
-	function onStartNewGame(gameVariant: GameVariant, players: string[]) {
-		setGameProps({players});
+	function onStartNewGame(gameVariant: GameVariant, playerNames: string[]) {
+		setGameProps({playerNames});
 		setShowNewGameDialog(false);
 		setGameVariant(gameVariant);
 	}
 
 	function GameVariant() {
 		if (gameVariant === CRICKET) {
-			return <Cricket players={gameProps.players}/>
+			return <Cricket playerNames={gameProps.playerNames}/>
 		} else if (gameVariant === SHANGHAI) {
-			return <Shanghai players={gameProps.players}/>
+			return <Shanghai playerNames={gameProps.playerNames}/>
 		} else
 			return null;
 	}

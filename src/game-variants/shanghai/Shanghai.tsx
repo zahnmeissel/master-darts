@@ -4,7 +4,7 @@ import TotalScore from "../cricket/TotalScore.tsx";
 import {useState} from "react";
 import ShanghaiScore from "./ShanghaiScore.tsx";
 
-export default function Shanghai({players}: GameProps) {
+export default function Shanghai({playerNames}: GameProps) {
 	const [player1, setPlayer1] = useState<number[]>([]);
 	const [player2, setPlayer2] = useState<number[]>([]);
 
