@@ -1,4 +1,6 @@
 import {useGameSetup} from "../../context/gameSetupContext";
+import {InputText} from 'primereact/inputtext';
+import {Button} from 'primereact/button';
 
 export default function PlayerOptions() {
     const {state, dispatch} = useGameSetup();
@@ -23,8 +25,8 @@ export default function PlayerOptions() {
             <h3>Spieler</h3>
             {
                 state.players.map(player => (
-                    <>
-                        <input
+                    <div key={player.id}>
+                        <InputText
                             key={player.id}
                             value={player.name}
                             onChange={e => dispatch({
@@ -33,14 +35,20 @@ export default function PlayerOptions() {
                                 name: e.target.value
                             })}
                         />
-                        <button onClick={() => dispatch({
-                            type: "REMOVE_PLAYER",
-                            playerId: player.id
-                        })}>-</button>
-                    </>
+                        <Button
+                            onClick={() => dispatch({
+                                type: "REMOVE_PLAYER",
+                                playerId: player.id
+                            })}
+                            label={"-"}
+                            severity={"warning"}/>
+                    </div>
                 ))
             }
-            <button onClick={() => dispatch({type: "ADD_PLAYER"})}>+</button>
+            <Button
+                onClick={() => dispatch({type: "ADD_PLAYER"})}
+                label={"+"}
+                severity={"secondary"}/>
         </div>
     );
 }

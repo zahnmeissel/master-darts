@@ -1,13 +1,9 @@
-import type {CRICKET, gameVariantOptions} from "../../lib/constants.ts";
-import {useEffect, useState} from "react";
-import {Dropdown} from "primereact/dropdown";
+import {GameType} from "../../lib/constants.ts";
 import {Button} from "primereact/button";
 import type {GameVariant} from "./api/GameVariant";
-import NewCricket from "./NewCricket";
-import type GameProvider from "./../../context/GameContext";
-import {createCricketGame} from "../../domain/CreateGameVariant";
 import GameTypeSelect from "./gameTypeSelect";
 import {useGameSetup} from "../../context/gameSetupContext";
+import OptionsCricket from "./optionsCricket";
 
 type NewGameProps = {
 	// Define any props if needed
@@ -17,9 +13,20 @@ type NewGameProps = {
 export default function GameSelectorView({onStartNewGame}: NewGameProps) {
 	const {state, dispatch} = useGameSetup();
 
+	function createGameTypeView(gameType: GameType) {
+		if (gameType === GameType.CRICKET) {
+			return (
+				<OptionsCricket />
+			)
+		}
+	}
+
 	return (
 		<div className="gameboard">
 			<GameTypeSelect />
+			{
+				createGameTypeView(state.gameType)
+			}
 			{/*
 				selectedGame === CRICKET && <GameProvider initialState={createCricketGame()}>
 				<NewCricket playerList = {players}/>
