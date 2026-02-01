@@ -1,39 +1,31 @@
-import NewGame from "./dialogs/new-game/NewGame.tsx";
 import {PrimeReactProvider} from "primereact/api";
 import Cricket from "./game-variants/cricket/Cricket.tsx";
 import Shanghai from "./game-variants/shanghai/Shanghai.tsx";
 import {useState} from "react";
-import {type GameProps, SHANGHAI, CRICKET} from "./lib/constants.ts";
+import {type GameProps, type SHANGHAI, type CRICKET} from "./lib/constants.ts";
 import type {GameVariant} from "./api/GameVariant.ts";
+import GameSelectorView from "./dialogs/selectorView/gameSelectorView";
+import {GameSetupProvider} from "./context/gameSetupContext";
+import type {GameSetupState} from "./context/gameSetupContext";
+import type {UnifiedGameState} from "./domain/model/UnifiedGameState";
+import {createCricketGame, createX01Game} from "./domain/CreateGameVariant";
+import {GameProvider} from "./context/GameContext";
+import GameSetupGate from "./gameSetupGate";
 
 
 function App() {
 
-	const [showNewGameDialog, setShowNewGameDialog] = useState(true);
-	const [gameVariant, setGameVariant] = useState<GameVariant>(SHANGHAI);
-	const [gameProps, setGameProps] = useState<GameProps>({playerNames: ["Player 1", "Player 2"]});
-
-	function onStartNewGame(gameVariant: GameVariant, playerNames: string[]) {
-		setGameProps({playerNames});
-		setShowNewGameDialog(false);
-		setGameVariant(gameVariant);
-	}
-
-	function GameVariant() {
-		if (gameVariant === CRICKET) {
-			return <Cricket playerNames={gameProps.playerNames}/>
-		} else if (gameVariant === SHANGHAI) {
-			return <Shanghai playerNames={gameProps.playerNames}/>
-		} else
-			return null;
-	}
-	return (
-		<PrimeReactProvider>
-			{showNewGameDialog && <NewGame onStartNewGame={onStartNewGame}></NewGame>}
-
-			{!showNewGameDialog && <GameVariant/>}
-		</PrimeReactProvider>
-	)
+    /*
+    * Reset (neues Spiel starten) explizit steuern
+    * <button onClick={() => dispatch({type: "RESET_SETUP"})}
+    * */
+    return (
+        <PrimeReactProvider>
+            <GameSetupProvider>
+                <GameSetupGate />
+            </GameSetupProvider>
+        </PrimeReactProvider>
+    )
 }
 
 export default App
