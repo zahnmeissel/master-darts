@@ -5,7 +5,8 @@ import type {DartThrow} from "../domain/dartTypes";
 export type GameAction =
     | { type: "START_GAME" }
     | { type: "THROW_DART"; dart: DartThrow }
-    | { type: "RESET_GAME" };
+    | { type: "RESET_GAME" }
+    | { type: "SET_CURRENT_PLAYER_INDEX"; playerId: number};
 
 function gameReducer(
     state: UnifiedGameState,
@@ -18,6 +19,8 @@ function gameReducer(
             return state.rules.applyThrow(state, action.dart);
         case "RESET_GAME":
             return {...state, status: "SETUP"};
+        case "SET_CURRENT_PLAYER_INDEX":
+            return {...state, currentPlayerIndex: action.playerId};
         default:
             return state;
     }
@@ -26,8 +29,8 @@ function gameReducer(
 type GameDispatch = (action: GameAction) => void;
 
 type GameContextValue = {
-    state: UnifiedGameState;
-    dispatch: (action: GameAction) => void;
+    gameState: UnifiedGameState;
+    gameDispatch: (action: GameAction) => void;
 };
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -42,10 +45,10 @@ export function GameProvider(
         initialState,
         children
     }: GameProviderProps) {
-    const [state, dispatch] = useReducer(gameReducer, initialState);
+    const [gameState, gameDispatch] = useReducer(gameReducer, initialState);
 
     return (
-        <GameContext.Provider value={{ state, dispatch }}>
+        <GameContext.Provider value={{ gameState, gameDispatch }}>
             {children}
         </GameContext.Provider>
     );

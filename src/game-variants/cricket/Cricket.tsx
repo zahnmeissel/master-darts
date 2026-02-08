@@ -3,8 +3,14 @@ import {type GameProps, type PlayerInfo, cricketGameScores, cricketGameScoresAsN
 import {useState} from "react";
 import TotalScore from "./TotalScore.tsx";
 import HitScore from "../components/HitScore.tsx";
+import {useGame} from "../../context/GameContext";
+import {TARGETS} from "../../domain/rules/CricketUnifiedRules";
+import {useGameSetup} from "../../context/gameSetupContext";
 
 export default function Cricket({playerNames}: GameProps) {
+
+    const {gameState, gameDispatch} = useGame();
+    const {state, dispatch} = useGameSetup();
 
     const [player1, setPlayer1] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [player2, setPlayer2] = useState([0, 0, 0, 0, 0, 0, 0]);
@@ -15,7 +21,7 @@ export default function Cricket({playerNames}: GameProps) {
         return convertInitialPlayers(playerNames);
     });
 
-    const isTwoPlayers = playerNames.length === 2;
+    const isTwoPlayers = gameState.players.length === 2;
 
     function convertInitialPlayers(playerNames): PlayerInfo[] {
         if (!Array.isArray(playerNames)) return [];
@@ -48,7 +54,7 @@ export default function Cricket({playerNames}: GameProps) {
     }
 
     function isNumberClosed(number: number): boolean {
-        return players.every(p => isClosed(p, number));
+        return false;//players.every(p => isClosed(p, number));
     }
 
     function allOpponentsClosed(players: PlayerInfo[], activePlayerId: number, number: number) {
@@ -106,7 +112,7 @@ export default function Cricket({playerNames}: GameProps) {
     }
 
     function isDisabled(index: number): boolean {
-        return player1[index] >= 3 && player2[index] >= 3;
+        return false;//player1[index] >= 3 && player2[index] >= 3;
     }
 
     function calculateTotalScore(scores: number[]) {
@@ -137,102 +143,109 @@ export default function Cricket({playerNames}: GameProps) {
     }
 
     return (
-        <div className="gameboard">
-            <header className="header">
-                <h1>Cricket Game</h1>
-            </header>
-            <div className="game">
-                <div className="player-info">
-                    {isTwoPlayers ? (
-                        <>
-                            <div className="player-name">
-                                {playerNames[0]}
-                            </div>
-                            <div className="player-name">
-                                {playerNames[1]}
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="player-switch-button">
-                                <Button icon="pi pi-arrow-right-arrow-left"/>
-                            </div>
-                            {players.map((player, index) => (
-                                <div className="player-name" key={index}>
-                                    {player}
-                                </div>
-                            ))}
-                        </>
-                    )}
-                </div>
-                {cricketGameScores.map((score, index) => {
-                    return (
-                        <div className={`player-info ${isDisabled(index) ? "disabled" : ""}`} key={index}>
-                            {
-                                isTwoPlayers ? (
-                                    <>
-                                        <HitScore
-                                            onIncrementScore={incrementScore}
-                                            index={index}
-                                            disabled={isNumberClosed(index)}
-                                            playerId={0}/>
-                                        <div className="player-switch-button">
-                                            {score}
-                                        </div>
-                                        <HitScore
-                                            onIncrementScore={incrementScore}
-                                            index={index}
-                                            disabled={isNumberClosed(index)}
-                                            playerId={1}/>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="player-switch-button">
-                                            {score}
-                                        </div>
-                                        {players.map((player, keyIndex) => (
-                                            <HitScore
-                                                key={keyIndex}
-                                                onIncrementScore={incrementScore}
-                                                index={index}
-                                                disabled={isClosed(player, index)}
-                                                playerId={keyIndex}/>
-                                        ))}
-                                    </>
-                                )
+        <>
+            <div className="gameboard">
+                <header className="board-header">
+                    <h1 className={"board-title"}>Cricket Game</h1>
+                    <button className="board-close" type="button" aria-label="Close" onClick={() => dispatch({type: "RESET_SETUP"})}>
+                        <i className="pi pi-times" />
+                    </button>
+                </header>
+                <div className="game">
+                    <div className="player-info">
+                        {gameState.players.reduce<React.ReactNode[]>((acc, player, i) => {
+                            if (!isTwoPlayers && i === 0) {
+                                acc.push(
+                                    <div className="player-switch-button" key="switch-left">
+                                        <Button icon="pi pi-arrow-right-arrow-left"/>
+                                    </div>
+                                );
                             }
-                        </div>
-                    )
-                })}
-            </div>
-            <footer className={"footer"}>
-                <div className="player-info">
-                    {isTwoPlayers ? (
-                        <>
-                            <TotalScore
-                                score={totalScore1}
-                                isWinner={isWinner(0)}/>
-                            <div className="player-switch-button">
-                                Round
+
+                            acc.push(
+                                <div className="player-name" key={`p-${player.id ?? i}`}>
+                                    {String(player.name)}
+                                </div>
+                            );
+
+                            if (isTwoPlayers && i === 0) {
+                                acc.push(
+                                    <div className="player-switch-button" key="switch-mid">
+                                        <Button icon="pi pi-arrow-right-arrow-left"/>
+                                    </div>
+                                );
+                            }
+
+                            return acc;
+                        }, [])}
+                    </div>
+                    {TARGETS.map((score, index) => {
+                        return (
+                            <div className={`player-info ${isDisabled(index) ? "disabled" : ""}`} key={index}>
+                                {
+                                    isTwoPlayers ? (
+                                        <>
+                                            <HitScore
+                                                index={index}
+                                                disabled={isNumberClosed(index)}
+                                                playerId={gameState.players[0].id}/>
+                                            <div className="player-switch-button">
+                                                {score}
+                                            </div>
+                                            <HitScore
+                                                index={index}
+                                                disabled={isNumberClosed(index)}
+                                                playerId={gameState.players[1].id}/>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="player-switch-button">
+                                                {score}
+                                            </div>
+                                            {gameState.players.map((player, keyIndex) => (
+                                                <HitScore
+                                                    key={player.id}
+                                                    index={index}
+                                                    disabled={isClosed(player, index)}
+                                                    playerId={player.id}/>
+                                            ))}
+                                        </>
+                                    )
+                                }
                             </div>
-                            <TotalScore
-                                score={totalScore2}
-                                isWinner={isWinner(1)}/>
-                        </>
-                    ) : (
-                        <>
-                            <div className="player-switch-button">
-                                Round
-                            </div>
-                            {players.map((player, keyIndex) => (
-                                <TotalScore
-                                    score={player.score}
-                                    isWinner={isWinner(keyIndex)}/>
-                            ))}
-                        </>
-                    )}
+                        )
+                    })
+                    }
                 </div>
-            </footer>
-        </div>
+                {/*<footer className={"footer"}>
+                    <div className="player-info">
+                        {isTwoPlayers ? (
+                            <>
+                                <TotalScore
+                                    score={totalScore1}
+                                    isWinner={isWinner(0)}/>
+                                <div className="player-switch-button">
+                                    Round
+                                </div>
+                                <TotalScore
+                                    score={totalScore2}
+                                    isWinner={isWinner(1)}/>
+                            </>
+                        ) : (
+                            <>
+                                <div className="player-switch-button">
+                                    Round
+                                </div>
+                                {players.map((player, keyIndex) => (
+                                    <TotalScore
+                                        score={player.score}
+                                        isWinner={isWinner(keyIndex)}/>
+                                ))}
+                            </>
+                        )}
+                    </div>
+                </footer>*/}
+            </div>
+        </>
     )
 }

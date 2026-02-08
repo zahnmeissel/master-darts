@@ -1,24 +1,28 @@
 import BaseScore from "./BaseScore.tsx";
 import {useCallback, useState} from "react";
+import type {DartThrow} from "../../domain/dartTypes";
+import {useGame} from "../../context/GameContext";
 
 interface HitScoreProps extends React.HTMLAttributes<HTMLDivElement> {
 	index: number;
 	disabled: boolean;
 	playerId: number;
-	onIncrementScore: (score: number, index: number, playerId: number) => void;
 }
 
-export default function HitScore({onIncrementScore, index, playerId, disabled, ...restProps}: HitScoreProps) {
+export default function HitScore({target, playerId, disabled, ...restProps}: HitScoreProps) {
+
+	const {gameState, gameDispatch} = useGame();
+
 	const [count, setCount] = useState(0);
 
 	const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
 		console.log("HitScore clicked", event);
 		if (!disabled) {
-			const newCount = count + 1;
-			setCount(newCount);
-			onIncrementScore(newCount, index, playerId);
+			setCount(c => c + 1);
+			gameDispatch({type: "SET_CURRENT_PLAYER_INDEX", playerId});
+			gameDispatch({type: "THROW_DART", dart: {value: target, multiplier: 1}})
 		}
-	}, [disabled, onIncrementScore, index, playerId]);
+	}, [disabled, target, playerId]);
 
 	return (
 		<BaseScore onClick={handleClick} {...restProps}

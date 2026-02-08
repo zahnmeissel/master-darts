@@ -10,7 +10,7 @@ export type CricketPlayer = {
   score: number;
 };
 
-const TARGETS: CricketTarget[] = [20, 19, 18, 17, 16, 15, 25];
+export const TARGETS: CricketTarget[] = [20, 19, 18, 17, 16, 15, 25];
 
 export class CricketUnifiedRules implements UnifiedRules {
   name = "CRICKET";
