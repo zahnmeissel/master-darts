@@ -21,7 +21,6 @@ body {
   height: calc(100dvh - 16px);
 
   box-sizing: border-box;
-
 }
 
 .board-header {
@@ -127,6 +126,8 @@ body {
   align-items: center;
   width: 100%;
   padding: 8px 16px;
+  font-size: 20px;
+  margin-bottom: 12px;
 }
 
 .players--two {

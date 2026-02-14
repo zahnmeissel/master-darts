@@ -32,13 +32,13 @@ export default function Cricket({playerNames}: GameProps) {
                             if (!isTwoPlayers && i === 0) {
                                 acc.push(
                                     <div className="player-switch-button" key="switch-left">
-                                        <Button icon="pi pi-arrow-right-arrow-left" hidden={true}/>
                                     </div>
                                 );
                             }
 
                             acc.push(
-                                <div className="player-name" key={`p-${player.id ?? i}`}>
+                                <div className="player-name" key={`p-${player.id ?? i}`}
+                                style={{color: player.isWinner ? "#47914B" : "none"}}>
                                     {String(player.name)}
                                 </div>
                             );
@@ -46,7 +46,7 @@ export default function Cricket({playerNames}: GameProps) {
                             if (isTwoPlayers && i === 0) {
                                 acc.push(
                                     <div className="player-switch-button" key="switch-mid">
-                                        <Button icon="pi pi-arrow-right-arrow-left"/>
+
                                     </div>
                                 );
                             }
