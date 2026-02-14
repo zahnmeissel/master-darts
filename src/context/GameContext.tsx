@@ -6,7 +6,7 @@ export type GameAction =
     | { type: "START_GAME" }
     | { type: "THROW_DART"; dart: DartThrow }
     | { type: "RESET_GAME" }
-    | { type: "SET_CURRENT_PLAYER_INDEX"; playerId: number};
+    | { type: "SET_CURRENT_PLAYER_INDEX"; playerIndex: number};
 
 function gameReducer(
     state: UnifiedGameState,
@@ -20,7 +20,7 @@ function gameReducer(
         case "RESET_GAME":
             return {...state, status: "SETUP"};
         case "SET_CURRENT_PLAYER_INDEX":
-            return {...state, currentPlayerIndex: action.playerId};
+            return {...state, currentPlayerIndex: action.playerIndex};
         default:
             return state;
     }

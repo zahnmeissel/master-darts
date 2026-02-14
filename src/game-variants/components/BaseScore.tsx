@@ -38,6 +38,7 @@ export default function BaseScore({
 	}, []);
 
 	const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+		event.stopPropagation();
 		divRef.current?.focus(); // Setzt den nativen Fokus auf das Div
 		onClick?.(event); // Ruft den externen onClick-Handler auf, falls vorhanden
 	}, [onClick]);

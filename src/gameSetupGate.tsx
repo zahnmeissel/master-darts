@@ -16,6 +16,7 @@ export default function GameSetupGate() {
     }
 
     function startGame(setup: GameSetupState): UnifiedGameState {
+        ///dispatch({type: "START_GAME"});
         switch (setup.gameType) {
             case GameType.X01:
                 return createX01Game(setup.players)
