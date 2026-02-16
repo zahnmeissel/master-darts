@@ -4,15 +4,18 @@ import GameSelectorView from "./dialogs/selectorView/gameSelectorView";
 import {GameProvider} from "./context/GameContext";
 import type {UnifiedGameState} from "./domain/model/UnifiedGameState";
 import {createCricketGame, createX01Game} from "./domain/CreateGameVariant";
-import {GameType} from "./lib/constants";
-import { Button } from 'primereact/button';
 import Cricket from "./game-variants/cricket/Cricket";
+import {GameType} from "./lib/constants.ts";
 
 export default function GameSetupGate() {
-    const {state: setupState, dispatch} = useGameSetup();
+    const {state: setupState} = useGameSetup();
 
     if (setupState.status === "SETUP") {
         return <GameSelectorView />;
+    }
+
+    function assertNever(x: never): never {
+        throw new Error(`Unexpected value: ${x}`);
     }
 
     function startGame(setup: GameSetupState): UnifiedGameState {
@@ -22,6 +25,10 @@ export default function GameSetupGate() {
                 return createX01Game(setup.players)
             case GameType.CRICKET:
                 return createCricketGame(setup.players)
+            case GameType.SHANGHAI:
+                throw new Error("Shanghai not implemented yet");
+            default:
+                throw assertNever(setup.gameType);
         }
     }
 

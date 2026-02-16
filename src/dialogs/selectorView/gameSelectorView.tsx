@@ -1,16 +1,10 @@
 import {GameType} from "../../lib/constants.ts";
 import {Button} from "primereact/button";
-import type {GameVariant} from "./api/GameVariant";
 import GameTypeSelect from "./gameTypeSelect";
 import {useGameSetup} from "../../context/gameSetupContext";
 import OptionsCricket from "./optionsCricket";
 
-type NewGameProps = {
-	// Define any props if needed
-	onStartNewGame: (gameVariant: GameVariant, playerNames: string[]) => void;
-}
-
-export default function GameSelectorView({onStartNewGame}: NewGameProps) {
+export default function GameSelectorView() {
 	const {state, dispatch} = useGameSetup();
 
 	function createGameTypeView(gameType: GameType) {

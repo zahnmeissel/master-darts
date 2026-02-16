@@ -9,11 +9,15 @@ export type X01Player = {
 
 export class X01UnifiedRules implements UnifiedRules {
   name = "X01";
-
+  private startScore: number;
+  private doubleOut: boolean;
   constructor(
-    private startScore: number,
-    private doubleOut: boolean
-  ) {}
+    startScore: number,
+    doubleOut: boolean
+  ) {
+    this.doubleOut = doubleOut;
+    this.startScore = startScore;
+  }
 
   initialPlayers(players: { id: string; name: string }[]): X01Player[] {
     return players.map(p => ({

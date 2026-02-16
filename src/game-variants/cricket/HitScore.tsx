@@ -1,12 +1,11 @@
 import BaseScore from "../components/BaseScore.tsx";
 import {useCallback, useState} from "react";
-import type {DartThrow} from "../../domain/dartTypes";
 import {useGame} from "../../context/GameContext";
 import styles from "./HitScore.module.scss";
-import type {CricketTarget} from "../../domain/rules/CricketUnifiedRules";
+import type {CricketTarget} from "../../domain/rules/CricketUnifiedRules.ts";
 
 interface HitScoreProps extends React.HTMLAttributes<HTMLDivElement> {
-    target: CricketTarget;
+    target: number;
     disabled: boolean;
     playerIndex: number;
 }
@@ -22,12 +21,11 @@ export default function HitScore({target, playerIndex, disabled, ...restProps}: 
         if (!disabled) {
             setCount(c => c + 1);
             gameDispatch({type: "SET_CURRENT_PLAYER_INDEX", playerIndex});
-            gameDispatch({type: "THROW_DART", dart: {value: target, multiplier: 1}})
+            gameDispatch({type: "THROW_DART", dart: {value: target as CricketTarget, multiplier: 1}})
         }
     }, [disabled, target, playerIndex]);
 
     const isTargetClosed = gameState.players.every(p => p.marks[target] >= 3);
-    const isWinner = gameState.players[playerIndex].isWinner;
 
     return (
 

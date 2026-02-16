@@ -1,5 +1,6 @@
 import {useGameSetup} from "../../context/gameSetupContext";
-import {GameType, gameVariantOptions} from "../../lib/constants";
+import {gameVariantOptions} from "../../lib/constants";
+import type {GameType} from "../../lib/constants";
 import { Dropdown } from 'primereact/dropdown';
 
 export default function GameTypeSelect() {

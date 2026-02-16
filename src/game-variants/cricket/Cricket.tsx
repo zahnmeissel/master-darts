@@ -6,8 +6,8 @@ import {useGameSetup} from "../../context/gameSetupContext";
 
 export default function Cricket() {
 
-    const {gameState, gameDispatch} = useGame();
-    const {state, dispatch} = useGameSetup();
+    const {gameState} = useGame();
+    const {dispatch} = useGameSetup();
 
     const isTwoPlayers = gameState.players.length === 2;
 

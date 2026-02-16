@@ -4,10 +4,13 @@ export const allScores: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9",
     "13", "14", "15", "16", "17", "18", "19", "20", "Bulls"];
 export const allScoresAsNumbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25];
 
-export enum GameType {CRICKET, X01, SHANGHAI};
+export const GameType =
+    {CRICKET: "CRICKET", X01: "X01", SHANGHAI: "SHANGHAI"} as const;
+
+export type GameType = typeof GameType[keyof typeof GameType];
 
 export type GameVariant = {
-    type: GameType;
+    type: string;
     name: string;
 }
 

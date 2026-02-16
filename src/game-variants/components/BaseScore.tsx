@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import styles from "./BaseScore.module.scss";
 import {useGame} from "../../context/GameContext";
 
@@ -16,31 +16,16 @@ export default function BaseScore(
         ...restProps
     }: BaseScoreProps) {
 
-    const divRef = useRef(null);
+    const divRef = useRef<HTMLDivElement | null>(null);
 
-    const {gameState, gameDispatch} = useGame();
+    const {gameState} = useGame();
     const [isFocused, setIsFocused] = useState(false);
-    const [winnerAlt, setWinnerAlt] = useState(false);
 
     /*
     * das klappt nicht da isWinner erst auf true geht wenn das Click durchgeführt wurde
     * das muss nachher von aussen gesteuert werden...
     * */
     const isWinner = playerIndex != null ? gameState.players[playerIndex]?.isWinner : false;
-
-    useEffect(() => {
-        if (!isWinner) {
-            setWinnerAlt(false); // zurück auf default wenn kein winner
-            return;
-        }
-
-        setWinnerAlt(true);
-        const id = window.setInterval(() => {
-            setWinnerAlt((v) => !v);
-        }, 2000);
-
-        return () => window.clearInterval(id);
-    }, [isWinner]);
 
     const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();

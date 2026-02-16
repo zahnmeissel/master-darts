@@ -5,21 +5,6 @@ import {Button} from 'primereact/button';
 export default function PlayerOptions() {
     const {state, dispatch} = useGameSetup();
 
-    const updateName = (index: number, name: string) => {
-        const updated = [...players];
-        updated[index] = name;
-        setPlayers(updated);
-    };
-
-    const addPlayer = () => {
-        setPlayers([...players, `Spieler ${players.length + 1}`]);
-    };
-
-    const removePlayer = (index: number) => {
-        if (players.length <= 2) return;
-        setPlayers(players.filter((_, i) => i !== index));
-    };
-
     return (
         <div>
             <h3>Spieler</h3>

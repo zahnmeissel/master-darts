@@ -1,5 +1,6 @@
-import {createContext, useContext, useReducer, useState, useEffect, ReactNode} from "react";
-import {GameType} from "../lib/constants";
+import {createContext, useContext, useReducer, useEffect} from "react";
+import type {ReactNode} from "react";
+import { GameType} from "../lib/constants";
 
 //STORAGE
 const STORAGE_KEY = "dart-game-setup";
