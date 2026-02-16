@@ -1,6 +1,7 @@
 import {createContext, useContext, useReducer, useEffect} from "react";
 import type {ReactNode} from "react";
 import { GameType} from "../lib/constants";
+import { v4 as uuidv4 } from "uuid";
 
 //STORAGE
 const STORAGE_KEY = "dart-game-setup";
@@ -44,8 +45,8 @@ export const initialSetupState: GameSetupState = {
     gameType: GameType.CRICKET,
     status: "SETUP",
     players: [
-        {id: crypto.randomUUID(), name: "Spieler 1"},
-        {id: crypto.randomUUID(), name: "Spieler 2"}
+        {id: uuidv4(), name: "Spieler 1"},
+        {id: uuidv4(), name: "Spieler 2"}
     ]
 };
 
@@ -64,7 +65,7 @@ function gameSetupReducer(
                 players: [
                     ...state.players,
                     {
-                        id: crypto.randomUUID(),
+                        id: uuidv4(),
                         name: `Spieler ${state.players.length + 1}`
                     }
                 ]
