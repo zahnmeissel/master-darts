@@ -1,10 +1,12 @@
-import BaseScore from "./BaseScore.tsx";
+import BaseScore from "../components/BaseScore.tsx";
 import {useCallback, useState} from "react";
 import type {DartThrow} from "../../domain/dartTypes";
 import {useGame} from "../../context/GameContext";
+import styles from "./HitScore.module.scss";
+import type {CricketTarget} from "../../domain/rules/CricketUnifiedRules";
 
 interface HitScoreProps extends React.HTMLAttributes<HTMLDivElement> {
-    target: number;
+    target: CricketTarget;
     disabled: boolean;
     playerIndex: number;
 }
@@ -25,14 +27,19 @@ export default function HitScore({target, playerIndex, disabled, ...restProps}: 
     }, [disabled, target, playerIndex]);
 
     const isTargetClosed = gameState.players.every(p => p.marks[target] >= 3);
+    const isWinner = gameState.players[playerIndex].isWinner;
 
     return (
 
         <BaseScore onClick={handleClick} {...restProps}
-                   className={`hit-score ${isTargetClosed ? "hit-score--disabled" : ""}`}>
-            {count === 1 && <i className="pi pi-minus cricket-icon"/>}
-            {count === 2 && <i className="pi pi-plus cricket-icon"/>}
-            {count >= 3 && <i className="pi pi-plus-circle cricket-icon"/>}
+                   playerIndex={playerIndex}
+                   className={[
+                       styles.hitScore,
+                       (disabled || isTargetClosed) ? styles["hitScore--disabled"] : "",
+                   ].filter(Boolean).join(" ")}>
+            {count === 1 && <i className={`pi pi-minus ${styles.cricketIcon}`}/>}
+            {count === 2 && <i className={`pi pi-plus ${styles.cricketIcon}`}/>}
+            {count >= 3 && <i className={`pi pi-plus-circle ${styles.cricketIcon}`}/>}
         </BaseScore>
     )
 }

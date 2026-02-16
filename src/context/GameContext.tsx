@@ -1,4 +1,4 @@
-import {createContext, useContext, useReducer, useState, ReactNode} from "react";
+import {createContext, useContext, useReducer, ReactNode} from "react";
 import type {UnifiedGameState} from "../domain/model/UnifiedGameState";
 import type {DartThrow} from "../domain/dartTypes";
 
@@ -26,7 +26,7 @@ function gameReducer(
     }
 }
 
-type GameDispatch = (action: GameAction) => void;
+//type GameDispatch = (action: GameAction) => void;
 
 type GameContextValue = {
     gameState: UnifiedGameState;

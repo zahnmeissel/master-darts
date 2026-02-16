@@ -1,60 +1,71 @@
 import {useCallback, useEffect, useRef, useState} from "react";
+import styles from "./BaseScore.module.scss";
+import {useGame} from "../../context/GameContext";
 
-interface BaseScoreProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface BaseScoreProps extends React.HTMLAttributes<HTMLDivElement> {
+    playerIndex?: number;
+}
 
-export default function BaseScore({
-									  children,
-									  className,
-									  style,
-									  onClick,
-									  ...restProps
-								  }: BaseScoreProps) {
+export default function BaseScore(
+    {
+        children,
+        className,
+        style,
+        onClick,
+        playerIndex,
+        ...restProps
+    }: BaseScoreProps) {
 
-	const divRef = useRef(null);
-	const [isFocused, setIsFocused] = useState(false);
+    const divRef = useRef(null);
 
-	useEffect(() => {
-		const handleFocusIn = (event) => {
-			// Prüfen, ob das aktuell fokussierte Element innerhalb unserer Box ist
-			if (divRef.current && divRef.current.contains(event.target)) {
-				setIsFocused(true);
-			}
-		};
-		const handleFocusOut = (event) => {
-			// Prüfen, ob der Fokus die Box verlassen hat
-			if (divRef.current && !divRef.current.contains(event.relatedTarget)) {
-				setIsFocused(false);
-			}
-		};
+    const {gameState, gameDispatch} = useGame();
+    const [isFocused, setIsFocused] = useState(false);
+    const [winnerAlt, setWinnerAlt] = useState(false);
 
-		// Event-Listener auf dem Dokument, um Fokuswechsel zu verfolgen
-		document.addEventListener("focusin", handleFocusIn);
-		document.addEventListener("focusout", handleFocusOut);
+    /*
+    * das klappt nicht da isWinner erst auf true geht wenn das Click durchgeführt wurde
+    * das muss nachher von aussen gesteuert werden...
+    * */
+    const isWinner = playerIndex != null ? gameState.players[playerIndex]?.isWinner : false;
 
-		return () => {
-			document.removeEventListener("focusin", handleFocusIn);
-			document.removeEventListener("focusout", handleFocusOut);
-		};
-	}, []);
+    useEffect(() => {
+        if (!isWinner) {
+            setWinnerAlt(false); // zurück auf default wenn kein winner
+            return;
+        }
 
-	const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-		event.stopPropagation();
-		divRef.current?.focus(); // Setzt den nativen Fokus auf das Div
-		onClick?.(event); // Ruft den externen onClick-Handler auf, falls vorhanden
-	}, [onClick]);
+        setWinnerAlt(true);
+        const id = window.setInterval(() => {
+            setWinnerAlt((v) => !v);
+        }, 2000);
 
-	const focusClass = isFocused ? "base-score--focused" : "";
+        return () => window.clearInterval(id);
+    }, [isWinner]);
 
-	return (
-		<div
-			className={`base-score ${focusClass} ${className || ""}`}
-			tabIndex={0}
-			style={style}
-			ref={divRef}
-			onClick={handleClick}
-			{...restProps}
-		>
-			{children}
-		</div>
-	);
+    const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        divRef.current?.focus(); // Setzt den nativen Fokus auf das Div
+        onClick?.(event); // Ruft den externen onClick-Handler auf, falls vorhanden
+    }, [onClick]);
+
+    const options = [
+        styles.baseScore,
+        isFocused ? styles["baseScore--focused"] : "",
+        isWinner ? styles["baseScore--winner"] : "",                 // sofort
+        className ?? ""
+    ];
+    return (
+        <div
+            className={options.filter(Boolean).join(" ")}
+            tabIndex={0}
+            style={style}
+            ref={divRef}
+            onClick={handleClick}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            {...restProps}
+        >
+            {children}
+        </div>
+    );
 }

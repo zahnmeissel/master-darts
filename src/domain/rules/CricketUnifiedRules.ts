@@ -1,12 +1,12 @@
 import type {DartThrow} from "../dartTypes";
 import type {UnifiedRules, UnifiedGameState} from "../model/UnifiedGameState";
 
-type CricketTarget = 20 | 19 | 18 | 17 | 16 | 15 | 25;
+export type CricketTarget = 20 | 19 | 18 | 17 | 16 | 15 | 25;
 
 export type CricketPlayer = {
     id: string;
     name: string;
-    marks: Record<CricketTarget, number, boolean>;
+    marks: Record<CricketTarget, number>;
     score: number;
     isWinner: boolean;
 };
@@ -56,7 +56,7 @@ export class CricketUnifiedRules implements UnifiedRules {
 
         if (finished) {
             const finishedPlayers = players.map((p, i) =>
-                i === state.currentPlayerIndex ? {...player, isWinner: true} : {...p, isWinnner: false});
+                i === state.currentPlayerIndex ? {...player, isWinner: true} : {...p, isWinner: false});
             return {...state, players: finishedPlayers, status: "GAME_FINISHED"};
         }
 

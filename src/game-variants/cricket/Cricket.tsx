@@ -1,14 +1,10 @@
-import {Button} from "primereact/button";
-import {type GameProps, type PlayerInfo, cricketGameScores, cricketGameScoresAsNumbers} from "../../lib/constants.ts";
-import {useState} from "react";
 import TotalScore from "./TotalScore.tsx";
-import HitScore from "../components/HitScore.tsx";
+import HitScore from "../cricket/HitScore.tsx";
 import {useGame} from "../../context/GameContext";
 import {TARGETS} from "../../domain/rules/CricketUnifiedRules";
 import {useGameSetup} from "../../context/gameSetupContext";
-import cricketStyles from "./Cricket.module.scss"
 
-export default function Cricket({playerNames}: GameProps) {
+export default function Cricket() {
 
     const {gameState, gameDispatch} = useGame();
     const {state, dispatch} = useGameSetup();
@@ -37,8 +33,7 @@ export default function Cricket({playerNames}: GameProps) {
                             }
 
                             acc.push(
-                                <div className="player-name" key={`p-${player.id ?? i}`}
-                                style={{color: player.isWinner ? "#47914B" : "none"}}>
+                                <div className="player-name" key={`p-${player.id ?? i}`}>
                                     {String(player.name)}
                                 </div>
                             );
@@ -105,13 +100,13 @@ export default function Cricket({playerNames}: GameProps) {
                             <>
                                 <TotalScore
                                     score={gameState.players[0].score}
-                                    isWinner={false}/>
+                                    isWinner={gameState.players[0].isWinner}/>
                                 <div className="player-switch-button">
 
                                 </div>
                                 <TotalScore
                                     score={gameState.players[1].score}
-                                    isWinner={false}/>
+                                    isWinner={gameState.players[1].isWinner}/>
                             </>
                         ) : (
                             <>
@@ -120,8 +115,9 @@ export default function Cricket({playerNames}: GameProps) {
                                 </div>
                                 {gameState.players.map((player, keyIndex) => (
                                     <TotalScore
-                                        score={"player.score"}
-                                        isWinner={false}/>
+                                        key={keyIndex}
+                                        score={player.score}
+                                        isWinner={player.isWinner}/>
                                 ))}
                             </>
                         )}
