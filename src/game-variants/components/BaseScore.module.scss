@@ -1,0 +1,34 @@
+@keyframes winnerPulse {
+  0%, 100% {
+    filter: brightness(0.9);
+  }
+  50% {
+    filter: brightness(1.15);
+  }
+}
+.baseScore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: darkslategray;
+  border-radius: 20px;
+  width: 100px;
+  height: 75px;
+  caret-color: transparent;
+
+  &--focused {
+    outline: 2px solid blue;
+  }
+
+  &--disabled {
+    background: darkseagreen;
+  }
+
+  &--winner {
+    animation: winnerPulse 1.6s ease-in-out infinite;
+    will-change: filter;
+  }
+
+  transition: background-color 250ms ease;
+}
+

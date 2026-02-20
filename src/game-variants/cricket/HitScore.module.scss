@@ -1,0 +1,16 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/base" as *;
+
+.hitScore {
+  font-size: clamp(32px, 16vw, 40px);
+  padding: clamp(6px, 1.2vw, 12px);
+  border-radius: 12px;
+}
+.hitScore--disabled {
+  background: darkseagreen;
+}
+.cricketIcon {
+  font-size: clamp(32px, 16vw, 40px);
+  color: white;
+}
