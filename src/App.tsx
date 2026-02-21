@@ -5,14 +5,12 @@ import GameSetupGate from "./gameSetupGate";
 
 function App() {
 
-    /*
-    * Reset (neues Spiel starten) explizit steuern
-    * <button onClick={() => dispatch({type: "RESET_SETUP"})}
-    * */
     return (
         <PrimeReactProvider>
             <GameSetupProvider>
-                <GameSetupGate />
+                <div className={"wrapper"}>
+                    <GameSetupGate />
+                </div>
             </GameSetupProvider>
         </PrimeReactProvider>
     )

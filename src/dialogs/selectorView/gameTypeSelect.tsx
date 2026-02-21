@@ -1,17 +1,19 @@
 import {useGameSetup} from "../../context/gameSetupContext";
 import {gameVariantOptions} from "../../lib/constants";
 import type {GameType} from "../../lib/constants";
-import { Dropdown } from 'primereact/dropdown';
+import {Dropdown} from 'primereact/dropdown';
+import '../../styles/base.scss';
 
 export default function GameTypeSelect() {
     const {state, dispatch} = useGameSetup();
 
     return (
-        <>
-            <h1>New Game</h1>
-            <p>Welcome to the new game setup!</p>
-            <p>Here you can configure your game settings.</p>
-            <Dropdown
+        <div className={"header"}>
+
+            <h1>Master Darts</h1>
+            <p>Wähle welche Spielart Du trainieren möchtest</p>
+
+            <Dropdown style={{width: '100%'}}
                 options={gameVariantOptions}
                 optionLabel={"name"}
                 optionValue={"type"}
@@ -22,6 +24,6 @@ export default function GameTypeSelect() {
                 })}
             />
 
-        </>
+        </div>
     );
 }

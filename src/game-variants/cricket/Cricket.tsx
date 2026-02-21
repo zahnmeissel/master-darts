@@ -3,6 +3,7 @@ import HitScore from "../cricket/HitScore.tsx";
 import {useGame} from "../../context/GameContext";
 import {TARGETS} from "../../domain/rules/CricketUnifiedRules";
 import {useGameSetup} from "../../context/gameSetupContext";
+import "../../styles/base.scss";
 
 export default function Cricket() {
 
