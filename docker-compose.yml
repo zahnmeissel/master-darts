@@ -1,0 +1,7 @@
+services:
+  master-darts-ui:
+    image: ghcr.io/zahnmeissel/master-darts:latest
+    container_name: my-react-app
+    restart: unless-stopped
+    ports:
+      - "8082:80"

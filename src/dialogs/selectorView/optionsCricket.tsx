@@ -3,6 +3,9 @@ import PlayerOptions from "./playerOptions";
 export default function OptionsCricket() {
 
     return (
-        <PlayerOptions/>
+        <div>
+            <hr></hr>
+            <PlayerOptions/>
+        </div>
     );
 }
