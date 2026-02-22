@@ -8,7 +8,7 @@
   border-radius: 12px;
 }
 .hitScore--disabled {
-  background: darkseagreen;
+  background: tokens.$scoreColor;
 }
 .cricketIcon {
   font-size: clamp(32px, 16vw, 40px);
