@@ -2,6 +2,7 @@ import {createContext, useContext, useReducer, useEffect} from "react";
 import type {ReactNode} from "react";
 import { GameType} from "../lib/constants";
 import { v4 as uuidv4 } from "uuid";
+import type {CricketOptions} from "../domain/rules/CricketUnifiedRules.ts";
 
 //STORAGE
 const STORAGE_KEY = "dart-game-setup";
@@ -13,11 +14,19 @@ function loadSetupState(): GameSetupState {
 
         const parsed = JSON.parse(raw) as GameSetupState;
 
-        if (!parsed.players || parsed.players.length < 2) {
-            return initialSetupState;
-        }
+        return {
+            ...initialSetupState,
+            ...parsed,
+            players:
+            parsed.players && parsed.players.length >= 2
+            ? parsed.players
+                : initialSetupState.players,
+            cricketOptions: {
+                ...initialSetupState.cricketOptions,
+                ...(parsed.cricketOptions ?? {}),
+            }
+        };
 
-        return parsed;
     } catch {
         return initialSetupState;
     }
@@ -31,6 +40,7 @@ export type GameSetupState = {
         name: string;
         options?: Record<string, number>;
     }[];
+    cricketOptions: CricketOptions;
 };
 
 export type GameSetupAction =
@@ -39,7 +49,8 @@ export type GameSetupAction =
     | { type: "ADD_PLAYER" }
     | { type: "REMOVE_PLAYER"; playerId: string }
     | { type: "RENAME_PLAYER"; playerId: string; name: string }
-    | { type: "RESET_SETUP" };
+    | { type: "RESET_SETUP" }
+    | { type: "SET_CRICKET_OPTION"; key: keyof CricketOptions; value: boolean};
 
 export const initialSetupState: GameSetupState = {
     gameType: GameType.CRICKET,
@@ -47,7 +58,10 @@ export const initialSetupState: GameSetupState = {
     players: [
         {id: uuidv4(), name: "Spieler 1"},
         {id: uuidv4(), name: "Spieler 2"}
-    ]
+    ],
+    cricketOptions: {
+        cutThroat: false,
+    }
 };
 
 function gameSetupReducer(
@@ -83,6 +97,14 @@ function gameSetupReducer(
             };
         case "RESET_SETUP":
             return initialSetupState;
+        case "SET_CRICKET_OPTION":
+            return {
+                ...state,
+                cricketOptions: {
+                    ...state.cricketOptions,
+                    [action.key]: action.value,
+                }
+            }
         default:
             return state;
     }

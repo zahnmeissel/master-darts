@@ -1,5 +1,6 @@
 import BaseScore from "./BaseScore.tsx";
 import {useCallback, useState} from "react";
+import * as React from "react";
 
 interface NumberScoreProps extends React.HTMLAttributes<HTMLDivElement> {}
 

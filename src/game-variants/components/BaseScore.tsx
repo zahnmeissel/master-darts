@@ -1,6 +1,7 @@
 import {useCallback, useRef, useState} from "react";
 import styles from "./BaseScore.module.scss";
 import {useGame} from "../../context/GameContext";
+import * as React from "react";
 
 interface BaseScoreProps extends React.HTMLAttributes<HTMLDivElement> {
     playerIndex?: number;

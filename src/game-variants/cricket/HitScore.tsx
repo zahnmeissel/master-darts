@@ -3,6 +3,7 @@ import {useCallback, useState} from "react";
 import {useGame} from "../../context/GameContext";
 import styles from "./HitScore.module.scss";
 import type {CricketTarget} from "../../domain/rules/CricketUnifiedRules.ts";
+import * as React from "react";
 
 interface HitScoreProps extends React.HTMLAttributes<HTMLDivElement> {
     target: number;
