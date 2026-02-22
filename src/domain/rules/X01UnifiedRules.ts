@@ -9,8 +9,8 @@ export type X01Player = {
 
 export class X01UnifiedRules implements UnifiedRules {
   name = "X01";
-  private startScore: number;
-  private doubleOut: boolean;
+  private readonly startScore: number;
+  private readonly doubleOut: boolean;
   constructor(
     startScore: number,
     doubleOut: boolean

@@ -1,6 +1,6 @@
-import { X01UnifiedRules } from "../domain/rules/X01UnifiedRules";
-import { CricketUnifiedRules } from "../domain/rules/CricketUnifiedRules";
-import type { UnifiedGameState } from "../domain/model/UnifiedGameState";
+import { X01UnifiedRules } from "./rules/X01UnifiedRules.ts";
+import {type CricketOptions, CricketUnifiedRules} from "./rules/CricketUnifiedRules.ts";
+import type { UnifiedGameState } from "./model/UnifiedGameState.ts";
 
 export function createX01Game(players: { id: string; name: string }[]): UnifiedGameState {
   const rules = new X01UnifiedRules(501, true);
@@ -12,8 +12,10 @@ export function createX01Game(players: { id: string; name: string }[]): UnifiedG
   };
 }
 
-export function createCricketGame(players: { id: string; name: string }[]): UnifiedGameState {
-  const rules = new CricketUnifiedRules();
+export function createCricketGame(
+    players: { id: string; name: string }[],
+    options: CricketOptions = {cutThroat: false}): UnifiedGameState {
+  const rules = new CricketUnifiedRules(options);
   return {
     rules,
     status: "SETUP",

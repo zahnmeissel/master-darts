@@ -4,6 +4,7 @@ import {useGame} from "../../context/GameContext";
 import {TARGETS} from "../../domain/rules/CricketUnifiedRules";
 import {useGameSetup} from "../../context/gameSetupContext";
 import "../../styles/base.scss";
+import * as React from "react";
 
 export default function Cricket() {
 

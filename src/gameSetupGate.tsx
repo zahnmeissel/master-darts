@@ -24,7 +24,7 @@ export default function GameSetupGate() {
             case GameType.X01:
                 return createX01Game(setup.players)
             case GameType.CRICKET:
-                return createCricketGame(setup.players)
+                return createCricketGame(setup.players, setup.cricketOptions)
             case GameType.SHANGHAI:
                 throw new Error("Shanghai not implemented yet");
             default:
