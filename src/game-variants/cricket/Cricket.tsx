@@ -59,36 +59,33 @@ export default function Cricket() {
                                     <div className={`score-row ${isTwoPlayers ? "score-row--two" : "score-row--multi"}`}
                                          key={index}
                                          style={!isTwoPlayers ? ({["--player-count" as any]: gameState.players.length} as React.CSSProperties) : undefined}>
-                                        {
-                                            isTwoPlayers ? (
-                                                <>
-                                                    <HitScore
-                                                        target={score}
-                                                        disabled={isTargetClosed}
-                                                        playerIndex={0}/>
-                                                    <div className="player-switch-button">
+                                        {gameState.players.reduce<React.ReactNode[]>((acc, player, i) => {
+                                            if (!isTwoPlayers && i === 0) {
+                                                acc.push(
+                                                    <div className="player-switch-button" key="switch-left">
                                                         {score}
                                                     </div>
-                                                    <HitScore
-                                                        target={score}
-                                                        disabled={isTargetClosed}
-                                                        playerIndex={1}/>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className="player-switch-button">
+                                                );
+                                            }
+
+                                            acc.push(
+                                                <HitScore
+                                                    key={`p-${player.id ?? i}`}
+                                                    target={score}
+                                                    disabled={isTargetClosed}
+                                                    playerIndex={i}/>
+                                            );
+
+                                            if (isTwoPlayers && i === 0) {
+                                                acc.push(
+                                                    <div className="player-switch-button" key="switch-mid">
                                                         {score}
                                                     </div>
-                                                    {gameState.players.map((player, keyIndex) => (
-                                                        <HitScore
-                                                            key={player.id}
-                                                            target={index}
-                                                            disabled={false}
-                                                            playerIndex={keyIndex}/>
-                                                    ))}
-                                                </>
-                                            )
-                                        }
+                                                );
+                                            }
+
+                                            return acc;
+                                        }, [])}
                                     </div>
                                 )
                             })
@@ -98,31 +95,31 @@ export default function Cricket() {
                 <footer className={"footer"}>
                     <div className={`score-row ${isTwoPlayers ? "score-row--two" : "score-row--multi"}`}
                          style={!isTwoPlayers ? ({["--player-count" as any]: gameState.players.length} as React.CSSProperties) : undefined}>
-                        {isTwoPlayers ? (
-                            <>
-                                <TotalScore
-                                    score={gameState.players[0].score}
-                                    isWinner={gameState.players[0].isWinner}/>
-                                <div className="player-switch-button">
+                        {gameState.players.reduce<React.ReactNode[]>((acc, player, i) => {
+                            if (!isTwoPlayers && i === 0) {
+                                acc.push(
+                                    <div className="player-switch-button" key="switch-left">
+                                    </div>
+                                );
+                            }
 
-                                </div>
+                            acc.push(
                                 <TotalScore
-                                    score={gameState.players[1].score}
-                                    isWinner={gameState.players[1].isWinner}/>
-                            </>
-                        ) : (
-                            <>
-                                <div className="player-switch-button">
+                                    key={`p-${player.id ?? i}`}
+                                    score={player.score}
+                                    isWinner={player.isWinner}/>
+                            );
 
-                                </div>
-                                {gameState.players.map((player, keyIndex) => (
-                                    <TotalScore
-                                        key={keyIndex}
-                                        score={player.score}
-                                        isWinner={player.isWinner}/>
-                                ))}
-                            </>
-                        )}
+                            if (isTwoPlayers && i === 0) {
+                                acc.push(
+                                    <div className="player-switch-button" key="switch-mid">
+
+                                    </div>
+                                );
+                            }
+
+                            return acc;
+                        }, [])}
                     </div>
                 </footer>
             </div>

@@ -1,3 +1,5 @@
+@use "tokens";
+
 .header {
   display: flex;
   flex-direction: column;
@@ -97,8 +99,8 @@
   gap: 8px;
   margin: 0;
   //margin: 6px 0; mal erst raus
-  background: lightgray;
-  color: black;
+  background: tokens.$globalBackGround;
+  color: tokens.$globalColor;
   border-radius: 5px;
   align-items: center;
   justify-items: center;
@@ -114,8 +116,8 @@
 .players {
   box-sizing: border-box;
   display: grid;
-  background: lightgray;
-  color: black;
+  background: tokens.$globalBackGround;
+  color: tokens.$globalColor;
   border-radius: 5px;
   align-items: center;
   width: 100%;
@@ -135,7 +137,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: tokens.$globalColor;
 }
 
 .player-switch-button {
@@ -146,17 +148,17 @@
   user-select: none;
 }
 .player-switch-button .p-button {
-  background: lightgray;
+  background: tokens.$globalBackGround;
 }
 .number-score {
-  color: white;
+  color: tokens.$globalColor;
   font-size: 40px;
 }
 
 .total-score {
   //@include base-score;
   font-size: 40px;
-  color: white;
+  color: tokens.$globalColor;
 }
 
 .total-score--winner {

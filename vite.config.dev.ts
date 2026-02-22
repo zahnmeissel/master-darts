@@ -9,8 +9,4 @@ export default defineConfig({
 			NODE_ENV: "development",
 		}
 	},
-	test: {
-		globals: true,
-		environment: "jsdom",
-	}
 })

@@ -17,8 +17,7 @@ export default function HitScore({target, playerIndex, disabled, ...restProps}: 
 
     const [count, setCount] = useState(0);
 
-    const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        console.log("HitScore clicked", event);
+    const handleClick = useCallback(() => {
         if (!disabled) {
             setCount(c => c + 1);
             gameDispatch({type: "SET_CURRENT_PLAYER_INDEX", playerIndex});
