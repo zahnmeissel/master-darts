@@ -1,23 +1,22 @@
 import type {DartThrow} from "../dartTypes";
-import type {UnifiedRules, UnifiedGameState} from "../model/UnifiedGameState";
+import type {UnifiedRules, UnifiedGameState, PlayerBase} from "../model/UnifiedGameState";
+import type {CricketOptions} from "./OptionsTypes.ts";
 
 export type CricketTarget = 20 | 19 | 18 | 17 | 16 | 15 | 25;
 
-export type CricketOptions = {
-    cutThroat: boolean; // vermutlich meinst du "Cut Throat"
-};
-
-export type CricketPlayer = {
-    id: string;
-    name: string;
+export type CricketPlayer = PlayerBase & {
     marks: Record<CricketTarget, number>;
     score: number;
     isWinner: boolean;
 };
 
+export type CricketVariantState = {
+    cricketOptions: CricketOptions;
+}
+
 export const TARGETS: CricketTarget[] = [20, 19, 18, 17, 16, 15, 25];
 
-export class CricketUnifiedRules implements UnifiedRules {
+export class CricketUnifiedRules implements UnifiedRules<CricketPlayer, CricketVariantState> {
     name = "CRICKET";
     private options: CricketOptions;
 
@@ -25,7 +24,7 @@ export class CricketUnifiedRules implements UnifiedRules {
         this.options = options;
     }
 
-    initialPlayers(players: { id: string; name: string }[]): CricketPlayer[] {
+    initialPlayers(players: PlayerBase[]): CricketPlayer[] {
         return players.map(p => ({
             ...p,
             marks: {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0},
@@ -34,7 +33,9 @@ export class CricketUnifiedRules implements UnifiedRules {
         }));
     }
 
-    applyThrow(state: UnifiedGameState, dart: DartThrow): UnifiedGameState {
+    applyThrow(
+        state: UnifiedGameState<CricketPlayer, CricketVariantState>,
+        dart: DartThrow): UnifiedGameState<CricketPlayer, CricketVariantState> {
         let players = state.players.map(p => ({...p}));
         const current = players[state.currentPlayerIndex];
 

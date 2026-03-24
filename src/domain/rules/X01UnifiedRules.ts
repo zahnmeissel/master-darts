@@ -1,13 +1,16 @@
 import type { DartThrow } from "../dartTypes";
-import type { UnifiedRules, UnifiedGameState } from "../model/UnifiedGameState";
+import type {UnifiedRules, UnifiedGameState, PlayerBase} from "../model/UnifiedGameState";
+import type {X01Options} from "./OptionsTypes.ts";
 
-export type X01Player = {
-  id: string;
-  name: string;
+export type X01Player = PlayerBase & {
   score: number;
 };
 
-export class X01UnifiedRules implements UnifiedRules {
+export type X01VariantState = {
+  x01Options: X01Options;
+}
+
+export class X01UnifiedRules implements UnifiedRules<X01Player, X01Options> {
   name = "X01";
   private readonly startScore: number;
   private readonly doubleOut: boolean;
@@ -19,14 +22,16 @@ export class X01UnifiedRules implements UnifiedRules {
     this.startScore = startScore;
   }
 
-  initialPlayers(players: { id: string; name: string }[]): X01Player[] {
+  initialPlayers(players: PlayerBase[]): X01Player[] {
     return players.map(p => ({
       ...p,
       score: this.startScore,
     }));
   }
 
-  applyThrow(state: UnifiedGameState, dart: DartThrow): UnifiedGameState {
+  applyThrow(
+      state: UnifiedGameState<X01Player, X01VariantState>,
+      dart: DartThrow): UnifiedGameState<X01Player, X01VariantState>{
     const players = [...state.players];
     const player = { ...players[state.currentPlayerIndex] };
     const hit = dart.value * dart.multiplier;

@@ -22,17 +22,14 @@ export default function BaseScore(
     const {gameState} = useGame();
     const [isFocused, setIsFocused] = useState(false);
 
-    /*
-    * das klappt nicht da isWinner erst auf true geht wenn das Click durchgeführt wurde
-    * das muss nachher von aussen gesteuert werden...
-    * */
     const isWinner = playerIndex != null ? gameState.players[playerIndex]?.isWinner : false;
 
     const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
-        divRef.current?.focus(); // Setzt den nativen Fokus auf das Div
-        onClick?.(event); // Ruft den externen onClick-Handler auf, falls vorhanden
-    }, [onClick]);
+        if (gameState.status === "GAME_FINISHED") return;
+        divRef.current?.focus();
+        onClick?.(event);
+    }, [onClick, gameState.status]);
 
     const options = [
         styles.baseScore,

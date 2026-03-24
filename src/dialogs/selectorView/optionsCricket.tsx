@@ -1,6 +1,7 @@
 import PlayerOptions from "./playerOptions";
 import {Checkbox} from "primereact/checkbox";
 import {useGameSetup} from "../../context/gameSetupContext.tsx";
+import {GameType} from "../../lib/constants.ts";
 
 export default function OptionsCricket() {
     const {state, dispatch} = useGameSetup();
@@ -12,9 +13,10 @@ export default function OptionsCricket() {
             <div style={{paddingTop: '16px'}}>
                 <Checkbox
                     inputId={"cutThroat"}
-                    checked={state.cricketOptions.cutThroat}
+                    checked={state.options.cutThroat}
                     onChange={(e) => dispatch({
-                            type: "SET_CRICKET_OPTION",
+                            type: "SET_OPTION",
+                            gameType: GameType.CRICKET,
                             key: "cutThroat",
                             value: !!e.checked,
                         }
