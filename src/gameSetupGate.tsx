@@ -1,17 +1,18 @@
-import type {GameSetupState} from "./context/gameSetupContext";
-import {useGameSetup} from "./context/gameSetupContext";
+import {type GameSetupState, useGameSetup} from "./context/gameSetupContext";
 import GameSelectorView from "./dialogs/selectorView/gameSelectorView";
 import {GameProvider} from "./context/GameContext";
 import type {UnifiedGameState} from "./domain/model/UnifiedGameState";
-import {createCricketGame, createX01Game} from "./domain/CreateGameVariant";
+import {createCricketGame, createShanghaiGame, createX01Game} from "./domain/CreateGameVariant";
 import Cricket from "./game-variants/cricket/Cricket";
 import {GameType} from "./lib/constants.ts";
+import X01 from "./game-variants/x01/X01.tsx";
+import Shanghai from "./game-variants/shanghai/Shanghai.tsx";
 
 export default function GameSetupGate() {
     const {state: setupState} = useGameSetup();
 
     if (setupState.status === "SETUP") {
-        return <GameSelectorView />;
+        return <GameSelectorView/>;
     }
 
     function assertNever(x: never): never {
@@ -22,11 +23,11 @@ export default function GameSetupGate() {
         ///dispatch({type: "START_GAME"});
         switch (setup.gameType) {
             case GameType.X01:
-                return createX01Game(setup.players)
+                return createX01Game(setup.players, setup.options)
             case GameType.CRICKET:
-                return createCricketGame(setup.players, setup.cricketOptions)
+                return createCricketGame(setup.players, setup.options)
             case GameType.SHANGHAI:
-                throw new Error("Shanghai not implemented yet");
+                return createShanghaiGame(setup.players, setup.options);
             default:
                 throw assertNever(setup.gameType);
         }
@@ -34,9 +35,9 @@ export default function GameSetupGate() {
 
     return (
         <GameProvider initialState={startGame(setupState)}>
-            {
-                <Cricket/>
-            }
+            {setupState.gameType === GameType.CRICKET && <Cricket/>}
+            {setupState.gameType === GameType.SHANGHAI && <Shanghai/>}
+            {setupState.gameType === GameType.X01 && <X01/>}
         </GameProvider>
     )
 }

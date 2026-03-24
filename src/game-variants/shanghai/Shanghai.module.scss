@@ -1,0 +1,166 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/base" as *;
+
+.gameboard {
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    overflow: hidden;
+}
+
+.boardHeader {
+    position: relative;
+    padding: 12px 16px;
+}
+
+.boardTitle {
+    margin: 0;
+    text-align: center;
+}
+
+.boardClose {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.boardClose:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.boardClose :global(.pi) {
+    font-size: clamp(18px, 3vw, 28px);
+    line-height: 1;
+}
+
+/* Player bar fixed height (durch padding + content) */
+.playerBar {
+    padding: 8px 16px;
+}
+
+.playerRow {
+    display: grid;
+    gap: 8px;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+}
+
+.playerCard {
+    border-radius: 14px;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.10);
+    min-width: 0;
+}
+
+.playerCardActive {
+    outline: 2px solid rgba(0, 0, 0, 0.35);
+}
+
+.playerName {
+    font-size: 14px;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playerScore {
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 700;
+}
+
+/* middle content */
+.boardContent {
+    min-height: 0;
+    overflow: auto;
+    padding: 8px 16px;
+}
+
+.centerPanel {
+    height: 100%;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+}
+
+.roundInfo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.roundLabel {
+    opacity: 0.8;
+}
+
+.roundValue {
+    font-size: clamp(22px, 4vw, 40px);
+    font-weight: 800;
+}
+
+.targetBox {
+    border-radius: 18px;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.10);
+}
+
+.targetLabel {
+    opacity: 0.8;
+    margin-bottom: 6px;
+}
+
+.targetValue {
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 900;
+    text-align: center;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+/* an BaseScore weiterreichen: nur Größe/Typo */
+.actionBtn {
+    width: 100%;
+    height: clamp(56px, 12vh, 110px);
+    font-size: clamp(16px, 3vw, 26px);
+}
+
+/* footer */
+.footer {
+    padding: 10px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.footerLeft,
+.footerCenter {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.footerCenter {
+    text-align: center;
+}
+
+.footerRight {
+    display: flex;
+    justify-content: flex-end;
+}

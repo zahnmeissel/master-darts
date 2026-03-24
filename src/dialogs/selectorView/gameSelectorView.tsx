@@ -12,6 +12,8 @@ export default function GameSelectorView() {
             return (
                 <OptionsCricket/>
             )
+        } else {
+            return null;
         }
     }
 

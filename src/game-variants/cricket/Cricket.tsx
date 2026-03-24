@@ -4,6 +4,7 @@ import {useGame} from "../../context/GameContext";
 import {TARGETS} from "../../domain/rules/CricketUnifiedRules";
 import {useGameSetup} from "../../context/gameSetupContext";
 import "../../styles/base.scss";
+import styles from "./Cricket.module.scss";
 import * as React from "react";
 
 export default function Cricket() {
@@ -23,7 +24,7 @@ export default function Cricket() {
                         <i className="pi pi-times"/>
                     </button>
                 </header>
-                <main className="gameboard-content">
+                <main className={styles["gameboard-content"]}>
                     <div className={`players ${isTwoPlayers ? "players--two" : "players--multi"}`}
                          style={!isTwoPlayers ? ({["--player-count" as any]: gameState.players.length} as React.CSSProperties) : undefined}>
                         {gameState.players.reduce<React.ReactNode[]>((acc, player, i) => {
@@ -51,7 +52,7 @@ export default function Cricket() {
                             return acc;
                         }, [])}
                     </div>
-                    <div className={"game"}>
+                    <div className={styles["game"]}>
                         {
                             TARGETS.map((score, index) => {
                                 const isTargetClosed = gameState.players.every(p => p.marks[score] >= 3);
