@@ -1,6 +1,7 @@
 import type { DartThrow } from "../dartTypes";
 import type {UnifiedRules, UnifiedGameState, PlayerBase} from "../model/UnifiedGameState";
 import type {ShanghaiOptions} from "./OptionsTypes.ts";
+import type {SetupPlayers} from "../../context/gameSetupContext.tsx";
 
 export type ShanghaiPlayer = PlayerBase & {
     score: number;
@@ -15,12 +16,12 @@ export type ShanghaiTurn = {
     hitTriple: boolean;
 };
 
-export type ShanghaiVaraiantState = {
+export type ShanghaiVariantState = {
     shanghaiTurn: ShanghaiTurn;
     shanghaiOptions: ShanghaiOptions;
 }
 
-export type ShanghaiGameState = UnifiedGameState<ShanghaiPlayer, ShanghaiVaraiantState>;
+export type ShanghaiGameState = UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState>;
 
 // Hilfsfunktion: Ziel der aktuellen Runde
 function getRoundTarget(round: number, options: ShanghaiOptions): number {
@@ -33,7 +34,7 @@ function maxRound(options: ShanghaiOptions): number {
     return options.includeBull ? 21 : 20;
 }
 
-export class ShanghaiUnifiedRules implements UnifiedRules<ShanghaiPlayer, ShanghaiVaraiantState> {
+export class ShanghaiUnifiedRules implements UnifiedRules<ShanghaiPlayer, ShanghaiVariantState> {
     name = "SHANGHAI";
     private options: ShanghaiOptions;
 
@@ -41,7 +42,7 @@ export class ShanghaiUnifiedRules implements UnifiedRules<ShanghaiPlayer, Shangh
         this.options = options;
     }
 
-    initialPlayers(players: PlayerBase[]): ShanghaiPlayer[] {
+    initialPlayers(players: SetupPlayers[]): ShanghaiPlayer[] {
         return players.map(p => ({
             ...p,
             score: 0,
@@ -50,8 +51,8 @@ export class ShanghaiUnifiedRules implements UnifiedRules<ShanghaiPlayer, Shangh
     }
 
     applyThrow(
-        state: UnifiedGameState<ShanghaiPlayer, ShanghaiVaraiantState>,
-        dart: DartThrow): UnifiedGameState<ShanghaiPlayer, ShanghaiVaraiantState> {
+        state: UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState>,
+        dart: DartThrow): UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState> {
 
         const players = state.players.map(p => ({ ...p })) as ShanghaiPlayer[];
         const currentIndex = state.currentPlayerIndex;

@@ -5,6 +5,7 @@ import * as React from "react";
 
 interface BaseScoreProps extends React.HTMLAttributes<HTMLDivElement> {
     playerIndex?: number;
+    disabled?: boolean;
 }
 
 export default function BaseScore(

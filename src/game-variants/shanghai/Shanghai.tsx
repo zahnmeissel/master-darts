@@ -4,6 +4,9 @@ import { useGame } from "../../context/GameContext";
 import { useGameSetup } from "../../context/gameSetupContext";
 import BaseScore from "../components/BaseScore";
 import styles from "./Shanghai.module.scss";
+import type {UnifiedGameState} from "../../domain/model/UnifiedGameState.ts";
+import type {ShanghaiPlayer, ShanghaiVariantState} from "../../domain/rules/ShanghaiUnifiedRules.ts";
+import type {DartValue} from "../../domain/dartTypes.ts";
 
 // Wenn du die Helper schon in den Rules hast, gern importieren.
 // Sonst hier:
@@ -16,38 +19,40 @@ export default function Shanghai() {
 	const { gameState, gameDispatch } = useGame();
 	const { dispatch: setupDispatch } = useGameSetup();
 
-	const includeBull = !!(gameState as any).shanghaiOptions?.includeBull;
-	const shanghaiTurn = (gameState as any).shanghaiTurn;
+	const shanghaiGameState = gameState as UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState>;
+
+	const includeBull = !!shanghaiGameState.shanghaiOptions?.includeBull;
+	const shanghaiTurn = shanghaiGameState.shanghaiTurn;
 	const round = shanghaiTurn?.round ?? 1;
 	const dartInTurn = shanghaiTurn?.dartInTurn ?? 0;
 
 	const target = useMemo(() => getRoundTarget(round, includeBull), [round, includeBull]);
 
-	const currentPlayerIndex = gameState.currentPlayerIndex;
-	const players = gameState.players;
+	const currentPlayerIndex = shanghaiGameState.currentPlayerIndex;
+	const players = shanghaiGameState.players;
 
 	const throwDart = useCallback(
 		(multiplier: 1 | 2 | 3) => {
-			if (gameState.status === "GAME_FINISHED") return;
+			if (shanghaiGameState.status === "GAME_FINISHED") return;
 
 			// (optional) sicherstellen, dass currentPlayerIndex stimmt
 			// gameDispatch({ type: "SET_CURRENT_PLAYER_INDEX", playerIndex: currentPlayerIndex });
 
 			gameDispatch({
 				type: "THROW_DART",
-				dart: { value: target, multiplier },
+				dart: { value: target as DartValue, multiplier },
 			});
 		},
-		[gameDispatch, gameState.status, target]
+		[gameDispatch, shanghaiGameState.status, target]
 	);
 
 	const miss = useCallback(() => {
-		if (gameState.status === "GAME_FINISHED") return;
+		if (shanghaiGameState.status === "GAME_FINISHED") return;
 		// "miss" => value != target, dann zählt es nicht
 		gameDispatch({ type: "THROW_DART", dart: { value: 0, multiplier: 1 } });
-	}, [gameDispatch, gameState.status]);
+	}, [gameDispatch, shanghaiGameState.status]);
 
-	const isFinished = gameState.status === "GAME_FINISHED";
+	const isFinished = shanghaiGameState.status === "GAME_FINISHED";
 
 	return (
 		<div className={styles.gameboard}>

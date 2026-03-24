@@ -1,7 +1,6 @@
 import {type GameSetupState, useGameSetup} from "./context/gameSetupContext";
 import GameSelectorView from "./dialogs/selectorView/gameSelectorView";
 import {GameProvider} from "./context/GameContext";
-import type {UnifiedGameState} from "./domain/model/UnifiedGameState";
 import {createCricketGame, createShanghaiGame, createX01Game} from "./domain/CreateGameVariant";
 import Cricket from "./game-variants/cricket/Cricket";
 import {GameType} from "./lib/constants.ts";
@@ -15,12 +14,7 @@ export default function GameSetupGate() {
         return <GameSelectorView/>;
     }
 
-    function assertNever(x: never): never {
-        throw new Error(`Unexpected value: ${x}`);
-    }
-
-    function startGame(setup: GameSetupState): UnifiedGameState {
-        ///dispatch({type: "START_GAME"});
+    function startGame(setup: GameSetupState) {
         switch (setup.gameType) {
             case GameType.X01:
                 return createX01Game(setup.players, setup.options)
@@ -29,7 +23,7 @@ export default function GameSetupGate() {
             case GameType.SHANGHAI:
                 return createShanghaiGame(setup.players, setup.options);
             default:
-                throw assertNever(setup.gameType);
+                throw new Error(`Unexpected value: `);
         }
     }
 

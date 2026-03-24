@@ -32,7 +32,7 @@ function loadSetupState(): GameSetupState {
     }
 }
 
-type SetupPlayers = {
+export type SetupPlayers = {
     id: string;
     name: string;
     options?: Record<string, number>;
@@ -45,18 +45,41 @@ type SetupBase = {
 
 export type GameSetupState =
     | (SetupBase & {
-    gameType: typeof GameType.CRICKET; options: CricketOptions })
+    gameType: typeof GameType.CRICKET; options: CricketOptions
+})
     | (SetupBase & {
-    gameType: typeof GameType.SHANGHAI; options: ShanghaiOptions })
+    gameType: typeof GameType.SHANGHAI; options: ShanghaiOptions
+})
     | (SetupBase & {
-    gameType: typeof GameType.X01; options: X01Options });
+    gameType: typeof GameType.X01; options: X01Options
+});
 
-type SetOptionAction<T extends GameType> = {
-    type: "SET_OPTION";
-    gameType: T;
-    key: keyof GameOptionsByType[T];
-    value: GameOptionsByType[T][keyof GameOptionsByType[T]];
-};
+type CricketSetOptionAction = {
+    [K in keyof GameOptionsByType[typeof GameType.CRICKET]]: {
+        type: "SET_OPTION";
+        gameType: typeof GameType.CRICKET;
+        key: K;
+        value: GameOptionsByType[typeof GameType.CRICKET][K];
+    }
+}[keyof GameOptionsByType[typeof GameType.CRICKET]];
+
+type ShanghaiSetOptionAction = {
+    [K in keyof GameOptionsByType[typeof GameType.SHANGHAI]]: {
+        type: "SET_OPTION";
+        gameType: typeof GameType.SHANGHAI;
+        key: K;
+        value: GameOptionsByType[typeof GameType.SHANGHAI][K];
+    }
+}[keyof GameOptionsByType[typeof GameType.SHANGHAI]];
+
+type X01SetOptionAction = {
+    [K in keyof GameOptionsByType[typeof GameType.X01]]: {
+        type: "SET_OPTION";
+        gameType: typeof GameType.X01;
+        key: K;
+        value: GameOptionsByType[typeof GameType.X01][K];
+    }
+}[keyof GameOptionsByType[typeof GameType.X01]];
 
 export type GameSetupAction =
     | { type: "START_GAME" }
@@ -65,11 +88,13 @@ export type GameSetupAction =
     | { type: "REMOVE_PLAYER"; playerId: string }
     | { type: "RENAME_PLAYER"; playerId: string; name: string }
     | { type: "RESET_SETUP" }
-    | SetOptionAction<GameType>;
+    | CricketSetOptionAction
+    | ShanghaiSetOptionAction
+    | X01SetOptionAction;
 
 const defaultOptions: GameOptionsByType = {
-    [GameType.CRICKET]: { cutThroat: false},
-    [GameType.SHANGHAI]: { includeBull: false},
+    [GameType.CRICKET]: {cutThroat: false},
+    [GameType.SHANGHAI]: {includeBull: false},
     [GameType.X01]: {startScore: 501, singleOut: false, doubleOut: true, masterOut: false},
 };
 
@@ -121,14 +146,38 @@ function gameSetupReducer(
         case "RESET_SETUP":
             return createInitialSetupState(state.gameType);
         case "SET_OPTION":
-            if (action.gameType !== state.gameType) return  state;
-            return {
-                ...state,
-                options: {
-                    ...(state.options as any),
-                    [action.key]: action.value,
-                } as any,
-            };
+            if (action.gameType !== state.gameType) return state;
+            switch (state.gameType) {
+                case GameType.CRICKET:
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            [action.key]: action.value,
+                        },
+                    };
+
+                case GameType.SHANGHAI:
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            [action.key]: action.value,
+                        },
+                    };
+
+                case GameType.X01:
+                    return {
+                        ...state,
+                        options: {
+                            ...state.options,
+                            [action.key]: action.value,
+                        },
+                    };
+
+                default:
+                    return state;
+            }
         default:
             return state;
     }

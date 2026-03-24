@@ -1,15 +1,15 @@
 import {type X01Player, X01UnifiedRules, type X01VariantState} from "./rules/X01UnifiedRules.ts";
 import {type CricketPlayer, CricketUnifiedRules, type CricketVariantState} from "./rules/CricketUnifiedRules.ts";
-import type {PlayerBase, UnifiedGameState} from "./model/UnifiedGameState.ts";
+import type {UnifiedGameState} from "./model/UnifiedGameState.ts";
 import {
   type ShanghaiPlayer,
-  ShanghaiUnifiedRules,
-  type ShanghaiVaraiantState
+  ShanghaiUnifiedRules, type ShanghaiVariantState
 } from "./rules/ShanghaiUnifiedRules.ts";
 import type {CricketOptions, ShanghaiOptions, X01Options} from "./rules/OptionsTypes.ts";
+import type {SetupPlayers} from "../context/gameSetupContext.tsx";
 
 export function createX01Game(
-    players: PlayerBase[],
+    players: SetupPlayers[],
     options: X01Options): UnifiedGameState<X01Player, X01VariantState> {
   const rules = new X01UnifiedRules(501, true);
   const state = {
@@ -23,7 +23,7 @@ export function createX01Game(
 }
 
 export function createCricketGame(
-    players: PlayerBase[],
+    players: SetupPlayers[],
     options: CricketOptions = {cutThroat: false}): UnifiedGameState<CricketPlayer, CricketVariantState> {
   const rules = new CricketUnifiedRules(options);
   const state = {
@@ -37,9 +37,9 @@ export function createCricketGame(
 }
 
 export function createShanghaiGame(
-    players: PlayerBase[],
+    players: SetupPlayers[],
     options: ShanghaiOptions = {includeBull: false}
-): UnifiedGameState<ShanghaiPlayer, ShanghaiVaraiantState> {
+): UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState> {
   const rules = new ShanghaiUnifiedRules(options);
 
   const state = {
@@ -57,5 +57,5 @@ export function createShanghaiGame(
     },
   };
 
-  return state as UnifiedGameState<ShanghaiPlayer, ShanghaiVaraiantState>
+  return state as UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState>
 }
