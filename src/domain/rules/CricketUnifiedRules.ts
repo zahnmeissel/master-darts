@@ -1,13 +1,13 @@
 import type {DartThrow} from "../dartTypes";
 import type {UnifiedRules, UnifiedGameState, PlayerBase} from "../model/UnifiedGameState";
 import type {CricketOptions} from "./OptionsTypes.ts";
+import type {SetupPlayers} from "../../context/gameSetupContext.tsx";
 
 export type CricketTarget = 20 | 19 | 18 | 17 | 16 | 15 | 25;
 
 export type CricketPlayer = PlayerBase & {
     marks: Record<CricketTarget, number>;
     score: number;
-    isWinner: boolean;
 };
 
 export type CricketVariantState = {
@@ -24,7 +24,7 @@ export class CricketUnifiedRules implements UnifiedRules<CricketPlayer, CricketV
         this.options = options;
     }
 
-    initialPlayers(players: PlayerBase[]): CricketPlayer[] {
+    initialPlayers(players: SetupPlayers[]): CricketPlayer[] {
         return players.map(p => ({
             ...p,
             marks: {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0},

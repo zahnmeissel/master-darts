@@ -3,6 +3,7 @@ import type {DartThrow} from "../dartTypes";
 export type PlayerBase = {
     id: string;
     name: string;
+    isWinner: boolean;
 };
 
 export type DeepReadOnly<T> =

@@ -6,6 +6,9 @@ import {GameType} from "../../lib/constants.ts";
 export default function OptionsCricket() {
     const {state, dispatch} = useGameSetup();
 
+    if (state.gameType !== GameType.CRICKET) {
+        return null;
+    }
     return (
         <div>
             <hr></hr>

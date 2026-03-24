@@ -2,6 +2,9 @@ import {createContext, useContext, useReducer} from "react";
 import type {ReactNode} from "react";
 import type {UnifiedGameState} from "../domain/model/UnifiedGameState";
 import type {DartThrow} from "../domain/dartTypes";
+import type {ShanghaiPlayer, ShanghaiVariantState} from "../domain/rules/ShanghaiUnifiedRules.ts";
+import type {X01Player, X01VariantState} from "../domain/rules/X01UnifiedRules.ts";
+import type {CricketPlayer, CricketVariantState} from "../domain/rules/CricketUnifiedRules.ts";
 
 export type GameAction =
     | { type: "START_GAME" }
@@ -9,15 +12,20 @@ export type GameAction =
     | { type: "RESET_GAME" }
     | { type: "SET_CURRENT_PLAYER_INDEX"; playerIndex: number};
 
+export type AnyGameState =
+    | UnifiedGameState<CricketPlayer, CricketVariantState>
+    | UnifiedGameState<X01Player, X01VariantState>
+    | UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState>;
+
 function gameReducer(
-    state: UnifiedGameState,
+    state: AnyGameState,
     action: GameAction
-): UnifiedGameState {
+): AnyGameState {
     switch (action.type) {
         case "START_GAME":
             return {...state, status: "RUNNING"};
         case "THROW_DART":
-            return state.rules.applyThrow(state, action.dart);
+            return state.rules.applyThrow(state as never, action.dart) as AnyGameState;
         case "RESET_GAME":
             return {...state, status: "SETUP"};
         case "SET_CURRENT_PLAYER_INDEX":
@@ -27,17 +35,15 @@ function gameReducer(
     }
 }
 
-//type GameDispatch = (action: GameAction) => void;
-
 type GameContextValue = {
-    gameState: UnifiedGameState;
+    gameState: AnyGameState;
     gameDispatch: (action: GameAction) => void;
 };
 
 const GameContext = createContext<GameContextValue | null>(null);
 
 type GameProviderProps = {
-    initialState: UnifiedGameState;
+    initialState: AnyGameState;
     children: ReactNode;
 }
 
