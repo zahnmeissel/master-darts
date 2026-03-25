@@ -11,7 +11,7 @@ import type {UnifiedGameState} from "../../domain/model/UnifiedGameState.ts";
 
 export default function Cricket() {
 
-    const {gameState} = useGame();
+    const {gameState, gameDispatch} = useGame();
     const {state, dispatch} = useGameSetup();
 
     if (state.gameType !== GameType.CRICKET) {
@@ -25,6 +25,14 @@ export default function Cricket() {
         <>
             <div className="gameboard">
                 <header className="board-header">
+                    <button
+                        className={"board-reset"}
+                        type="button"
+                        aria-label="Close"
+                        onClick={() => gameDispatch({ type: "RESET_GAME" })}
+                    >
+                        <i className="pi pi-replay" />
+                    </button>
                     <h1 className={"board-title"}>{cricketGameState.rules.name}</h1>
                     <button className="board-close" type="button" aria-label="Close"
                             onClick={() => dispatch({type: "RESET_SETUP"})}>

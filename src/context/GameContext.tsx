@@ -10,28 +10,50 @@ export type GameAction =
     | { type: "START_GAME" }
     | { type: "THROW_DART"; dart: DartThrow }
     | { type: "RESET_GAME" }
-    | { type: "SET_CURRENT_PLAYER_INDEX"; playerIndex: number};
+    | { type: "SET_CURRENT_PLAYER_INDEX"; playerIndex: number };
 
 export type AnyGameState =
     | UnifiedGameState<CricketPlayer, CricketVariantState>
     | UnifiedGameState<X01Player, X01VariantState>
     | UnifiedGameState<ShanghaiPlayer, ShanghaiVariantState>;
 
-function gameReducer(
-    state: AnyGameState,
-    action: GameAction
-): AnyGameState {
-    switch (action.type) {
-        case "START_GAME":
-            return {...state, status: "RUNNING"};
-        case "THROW_DART":
-            return state.rules.applyThrow(state as never, action.dart) as AnyGameState;
-        case "RESET_GAME":
-            return {...state, status: "SETUP"};
-        case "SET_CURRENT_PLAYER_INDEX":
-            return {...state, currentPlayerIndex: action.playerIndex};
-        default:
-            return state;
+function clonePreservingFunctions<T>(value: T): T {
+    if (Array.isArray(value)) {
+        return value.map(item => clonePreservingFunctions(item)) as T;
+    }
+
+    if (value && typeof value === "object") {
+        const clonedEntries = Object.entries(value as Record<string, unknown>).map(([key, entryValue]) => {
+            if (typeof entryValue === "function") {
+                return [key, entryValue];
+            }
+
+            return [key, clonePreservingFunctions(entryValue)];
+        });
+
+        return Object.fromEntries(clonedEntries) as T;
+    }
+
+    return value;
+}
+
+function createGameReducer(initialState: AnyGameState) {
+    return function gameReducer(
+        state: AnyGameState,
+        action: GameAction
+    ): AnyGameState {
+        switch (action.type) {
+            case "START_GAME":
+                return {...state, status: "RUNNING"};
+            case "THROW_DART":
+                return state.rules.applyThrow(state as never, action.dart) as AnyGameState;
+            case "RESET_GAME":
+                return clonePreservingFunctions(initialState);
+            case "SET_CURRENT_PLAYER_INDEX":
+                return {...state, currentPlayerIndex: action.playerIndex};
+            default:
+                return state;
+        }
     }
 }
 
@@ -52,10 +74,11 @@ export function GameProvider(
         initialState,
         children
     }: GameProviderProps) {
-    const [gameState, gameDispatch] = useReducer(gameReducer, initialState);
+    const [gameState, gameDispatch] = useReducer(
+        createGameReducer(initialState), initialState);
 
     return (
-        <GameContext.Provider value={{ gameState, gameDispatch }}>
+        <GameContext.Provider value={{gameState, gameDispatch}}>
             {children}
         </GameContext.Provider>
     );
