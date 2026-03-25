@@ -57,10 +57,18 @@ export default function Shanghai() {
 	return (
 		<div className={styles.gameboard}>
 			<header className={styles.boardHeader}>
+				<button
+					className={"board-reset"}
+					type="button"
+					aria-label="Close"
+					onClick={() => gameDispatch({ type: "RESET_GAME" })}
+				>
+					<i className="pi pi-replay" />
+				</button>
 				<h1 className={styles.boardTitle}>Shanghai</h1>
 
 				<button
-					className={styles.boardClose}
+					className={"board-close"}
 					type="button"
 					aria-label="Close"
 					onClick={() => setupDispatch({ type: "RESET_SETUP" })}
@@ -150,13 +158,6 @@ export default function Shanghai() {
 					Player: {players[currentPlayerIndex]?.name ?? "-"}
 				</div>
 
-				<div className={styles.footerRight}>
-					<Button
-						label="New Game"
-						onClick={() => setupDispatch({ type: "RESET_SETUP" })}
-						disabled={false}
-					/>
-				</div>
 			</footer>
 		</div>
 	);

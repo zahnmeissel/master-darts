@@ -46,6 +46,36 @@
   justify-content: center;
 }
 
+.board-reset {
+  position: absolute;
+  top: 0px;
+  left: 2px;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 10px; /* damit hover schön rund ist */
+}
+
+.board-reset:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.board-reset .pi {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.board-reset:hover .pi {
+  color: #d00; /* Hover-Farbe (anpassen) */
+}
+
+/* Optional: nicer focus (Keyboard) */
+.board-reset:focus-visible {
+  outline: 2px solid rgba(0,0,0,0.4);
+  outline-offset: 2px;
+}
+
 .board-close {
   position: absolute;
   top: 0;

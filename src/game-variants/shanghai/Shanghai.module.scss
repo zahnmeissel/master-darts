@@ -19,31 +19,6 @@
     text-align: center;
 }
 
-.boardClose {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 8px;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    border-radius: 12px;
-}
-
-.boardClose:hover {
-    background: rgba(0, 0, 0, 0.08);
-}
-
-.boardClose :global(.pi) {
-    font-size: clamp(18px, 3vw, 28px);
-    line-height: 1;
-}
-
 /* Player bar fixed height (durch padding + content) */
 .playerBar {
     padding: 8px 16px;
