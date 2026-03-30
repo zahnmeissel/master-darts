@@ -10,7 +10,8 @@ export type GameAction =
     | { type: "START_GAME" }
     | { type: "THROW_DART"; dart: DartThrow }
     | { type: "RESET_GAME" }
-    | { type: "SET_CURRENT_PLAYER_INDEX"; playerIndex: number };
+    | { type: "SET_CURRENT_PLAYER_INDEX"; playerIndex: number }
+    | { type: "UNDO" };
 
 export type AnyGameState =
     | UnifiedGameState<CricketPlayer, CricketVariantState>

@@ -1,10 +1,12 @@
 import type { DartThrow } from "../dartTypes";
 import type {UnifiedRules, UnifiedGameState, PlayerBase} from "../model/UnifiedGameState";
-import type {X01Options} from "./OptionsTypes.ts";
 import type {SetupPlayers} from "../../context/gameSetupContext.tsx";
+import type {X01Options} from "./X01Rules.ts";
 
 export type X01Player = PlayerBase & {
   score: number;
+  setsWon: number;
+  legsWon: number;
 };
 
 export type X01VariantState = {
@@ -13,7 +15,7 @@ export type X01VariantState = {
 
 export class X01UnifiedRules implements UnifiedRules<X01Player, X01VariantState> {
   name = "X01";
-  private readonly startScore: number;
+  readonly startScore: number;
   private readonly doubleOut: boolean;
   constructor(
     startScore: number,
@@ -27,6 +29,8 @@ export class X01UnifiedRules implements UnifiedRules<X01Player, X01VariantState>
     return players.map(p => ({
       ...p,
       score: this.startScore,
+      setsWon: 0,
+      legsWon: 0,
       isWinner: false,
     }));
   }

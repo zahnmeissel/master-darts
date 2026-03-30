@@ -5,8 +5,9 @@ import {
   type ShanghaiPlayer,
   ShanghaiUnifiedRules, type ShanghaiVariantState
 } from "./rules/ShanghaiUnifiedRules.ts";
-import type {CricketOptions, ShanghaiOptions, X01Options} from "./rules/OptionsTypes.ts";
+import type {CricketOptions, ShanghaiOptions} from "./rules/OptionsTypes.ts";
 import type {SetupPlayers} from "../context/gameSetupContext.tsx";
+import type {X01Options} from "./rules/X01Rules.ts";
 
 export function createX01Game(
     players: SetupPlayers[],

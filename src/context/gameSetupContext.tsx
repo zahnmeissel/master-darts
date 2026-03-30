@@ -2,7 +2,8 @@ import {createContext, useContext, useReducer, useEffect} from "react";
 import type {ReactNode} from "react";
 import {GameType} from "../lib/constants";
 import {v4 as uuidv4} from "uuid";
-import type {CricketOptions, GameOptionsByType, ShanghaiOptions, X01Options} from "../domain/rules/OptionsTypes.ts";
+import type {CricketOptions, GameOptionsByType, ShanghaiOptions} from "../domain/rules/OptionsTypes.ts";
+import type {X01Options} from "../domain/rules/X01Rules.ts";
 
 //STORAGE
 const STORAGE_KEY = "dart-game-setup";
@@ -95,7 +96,7 @@ export type GameSetupAction =
 const defaultOptions: GameOptionsByType = {
     [GameType.CRICKET]: {cutThroat: false},
     [GameType.SHANGHAI]: {includeBull: false},
-    [GameType.X01]: {startScore: 501, singleOut: false, doubleOut: true, masterOut: false},
+    [GameType.X01]: {startScore: 501, outRule: "DOUBLE_OUT", legsPerSet: 5, sets: 1},
 };
 
 function createInitialSetupState(gameType: GameType = GameType.CRICKET): GameSetupState {
